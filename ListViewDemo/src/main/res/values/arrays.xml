@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="cites">
+        <item>郑州</item>
+        <item>开封</item>
+        <item>洛阳</item>
+        <item>平顶山</item>
+        <item>安阳</item>
+        <item>新乡</item>
+        <item>许昌</item>
+        <item>驻马店</item>
+        <item>南阳</item>
+        <item>信阳</item>
+    </string-array>
+</resources>
