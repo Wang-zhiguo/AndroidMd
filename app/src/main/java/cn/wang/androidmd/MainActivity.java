@@ -1,6 +1,8 @@
 package cn.wang.androidmd;
 
 import android.os.Bundle;
+import android.os.Environment;
+import android.provider.MediaStore;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.view.View;
@@ -12,6 +14,13 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+
+import java.io.File;
+import java.io.IOException;
+
+import cn.wang.androidmd.utils.MusicUtil;
+
+import static android.os.Environment.DIRECTORY_DOWNLOADS;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -90,9 +99,17 @@ public class MainActivity extends AppCompatActivity
         if (id == R.id.nav_camera) {
             // Handle the camera action
         } else if (id == R.id.nav_gallery) {
-
+            MusicUtil.scanNewMp3Infos(this, MediaStore.Audio.Media.EXTERNAL_CONTENT_URI);
         } else if (id == R.id.nav_slideshow) {
-
+            File file = Environment.getExternalStoragePublicDirectory(DIRECTORY_DOWNLOADS);
+            System.out.println(file.getAbsolutePath());
+            try {
+                System.out.println(file.getCanonicalPath());
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            MusicUtil.mediaScan(this,file);
+//            MusicUtil.scanDirAsync(this,file.getAbsolutePath());
         } else if (id == R.id.nav_manage) {
 
         } else if (id == R.id.nav_share) {
