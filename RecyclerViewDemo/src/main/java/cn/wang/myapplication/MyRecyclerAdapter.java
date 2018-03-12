@@ -17,6 +17,15 @@ public class MyRecyclerAdapter extends RecyclerView.Adapter<MyRecyclerAdapter.My
     private List<String> mDatas;
     private Context mContext;
     private LayoutInflater inflater;
+    private OnItemClickListener mOnItemClickListener;
+
+    public interface OnItemClickListener{
+        void onClick( int position);
+        void onLongClick( int position);
+    }
+    public void setOnItemClickListener(OnItemClickListener onItemClickListener ){
+        this.mOnItemClickListener=onItemClickListener;
+    }
     public MyRecyclerAdapter(Context context, List<String> datas){
         this. mContext=context;
         this. mDatas=datas;
@@ -31,8 +40,25 @@ public class MyRecyclerAdapter extends RecyclerView.Adapter<MyRecyclerAdapter.My
     }
     //填充onCreateViewHolder方法返回的holder中的控件
     @Override
-    public void onBindViewHolder(MyViewHolder holder, int position) {
+    public void onBindViewHolder(MyViewHolder holder, final int position) {
         holder.tv.setText( mDatas.get(position));
+        if( mOnItemClickListener!= null){
+            holder.itemView.setOnClickListener( new View.OnClickListener() {
+
+                @Override
+                public void onClick(View v) {
+                    mOnItemClickListener.onClick(position);
+                }
+            });
+
+            holder. itemView.setOnLongClickListener( new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View v) {
+                    mOnItemClickListener.onLongClick(position);
+                    return false;
+                }
+            });
+        }
     }
 
     @Override

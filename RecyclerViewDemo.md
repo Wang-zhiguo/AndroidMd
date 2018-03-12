@@ -235,4 +235,56 @@ recyclerView.addItemDecoration(new DividerItemDecoration(this,DividerItemDecorat
 
 ![](pic/addandremove.gif)
 
+- 第八步：添加item的单击事件处理
+在ListView使用的时候，该控件给我们提供一个onItemClickListener监听器，这样当我们点击Item的时
+候，会回调相关的方法，以便我们方便处理Item点击事件。对于RecyclerView来讲，非常可惜的是，该控
+件没有给我们提供这样的内置监听器方法，不过我们可以进行改造实现，可以这样实现Item的点击事件的
+监听，在我们的adapter中增加这两个方法
+```
+    public interface OnItemClickListener{
+        void onClick( int position);
+        void onLongClick( int position);
+     }
+    public void setOnItemClickListener(OnItemClickListener onItemClickListener ){
+        this. mOnItemClickListener=onItemClickListener;
+     }
+```
+然后onBindViewHolder方法要做如下更改
+```
+    //填充onCreateViewHolder方法返回的holder中的控件
+    @Override
+    public void onBindViewHolder(MyViewHolder holder, final int position) {
+        holder.tv.setText( mDatas.get(position));
+        if( mOnItemClickListener!= null){
+            holder.itemView.setOnClickListener( new View.OnClickListener() {
 
+                @Override
+                public void onClick(View v) {
+                    mOnItemClickListener.onClick(position);
+                }
+            });
+
+            holder. itemView.setOnLongClickListener( new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View v) {
+                    mOnItemClickListener.onLongClick(position);
+                    return false;
+                }
+            });
+        }
+    }
+```
+在MainAcitivity的onCreate方法的最后增加：
+```
+    recycleAdapter.setOnItemClickListener(new MyRecyclerAdapter.OnItemClickListener() {
+            @Override
+            public void onLongClick(int position) {
+                Toast.makeText(MainActivity.this,"onLongClick事件您点击了第："+position+"个Item",Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onClick(int position) {
+                Toast.makeText(MainActivity.this,"onClick事件您点击了第："+position+"个Item",Toast.LENGTH_SHORT).show();
+            }
+        });
+```

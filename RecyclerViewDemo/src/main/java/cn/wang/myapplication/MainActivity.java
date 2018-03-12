@@ -10,6 +10,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,6 +39,17 @@ public class MainActivity extends AppCompatActivity {
         recyclerView.addItemDecoration(new DividerItemDecoration(this,DividerItemDecoration.VERTICAL));
         //设置增加或删除条目的动画
         recyclerView.setItemAnimator(new DefaultItemAnimator());
+        recycleAdapter.setOnItemClickListener(new MyRecyclerAdapter.OnItemClickListener() {
+            @Override
+            public void onLongClick(int position) {
+                Toast.makeText(MainActivity.this,"onLongClick事件您点击了第："+position+"个Item",Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onClick(int position) {
+                Toast.makeText(MainActivity.this,"onClick事件您点击了第："+position+"个Item",Toast.LENGTH_SHORT).show();
+            }
+        });
     }
     private void initData() {
         mDatas = new ArrayList<String>();
